@@ -2,7 +2,6 @@ import random, src, os
 
 card_values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 card_types = ["hearts", "diamonds", "spades", "clubs"]
-card_list = {}
 
 def clear():
     if os.name == 'nt':
@@ -67,16 +66,14 @@ def host_art(hand: list[dict]):
 
     return final_str
 
-def draw():
-    global card_list
+def draw(c_list):
     c_type = random.choice(card_types)
-    c_value = random.choice(card_list[c_type])
-    card_list[c_type].remove(c_value)
+    c_value = random.choice(c_list[c_type])
     result = {"type":c_type, "value":c_value}
     return result
 
 def game():
-    global card_list
+    card_list = {}
     for t in card_types:
         card_list[t] = card_values[:]
     clear()
@@ -84,8 +81,10 @@ def game():
     player_cards = []
     host_cards = []
     for n in range(0, 2):
-        player_cards.append(draw())
-        host_cards.append(draw())
+        player_cards.append(draw(card_list))
+        card_list[player_cards[-1]["type"]].remove(player_cards[-1]["value"])
+        host_cards.append(draw(card_list))
+        card_list[host_cards[-1]["type"]].remove(host_cards[-1]["value"])
 
     game_over = False
     current_total = 0
@@ -104,7 +103,8 @@ def game():
             answer = input("Do you want to draw another card? (y/n)\n")
 
         if answer == 'y':
-            player_cards.append(draw())
+            player_cards.append(draw(card_list))
+            card_list[player_cards[-1]["type"]].remove(player_cards[-1]["value"])
         else:
             game_over = True
 
@@ -112,7 +112,8 @@ def game():
     
     if host_total > 0 and current_total > 0:
         while host_total < 17:
-            host_cards.append(draw())
+            host_cards.append(draw(card_list))
+            card_list[host_cards[-1]["type"]].remove(host_cards[-1]["value"])
             host_total = calculate_total(host_cards, False, "host", False)
             print("Host draws another card.")
 
