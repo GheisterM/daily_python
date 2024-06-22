@@ -1,3 +1,7 @@
+"""
+Ascii art for the project.
+"""
+
 logo = """
     __  ___       __             
    / / / (_)___ _/ /_  ___  _____

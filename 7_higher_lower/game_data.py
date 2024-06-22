@@ -1,3 +1,6 @@
+"""
+Data for game.
+"""
 data = [
     {
         'name': 'Instagram',
