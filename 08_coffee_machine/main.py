@@ -146,7 +146,7 @@ if __name__ == '__main__':
             order = input(PROMPT).lower()
 
         if order == 'off':
-            break
+            turned_on = False
         elif order == 'report':
             print(report(resources))
         elif check_resources(order, resources):
