@@ -1,11 +1,13 @@
 from turtle import Turtle, _Screen
 
+OUT_OF_SCREEN = 1000
+
 
 class Snake:
 
     def __init__(self) -> None:
         self.score = 0
-        self.body = []
+        self.body = list[Turtle]()
         self.setup_snake()
         self.head = self.body[0]
 
@@ -21,6 +23,14 @@ class Snake:
         new_segment.speed(1)
         new_segment.backward(20*pos_index)
         self.body.append(new_segment)
+
+    def restart(self):
+        for segment in self.body:
+            segment.goto(OUT_OF_SCREEN, OUT_OF_SCREEN)
+
+        self.body.clear()
+        self.setup_snake()
+        self.head = self.body[0]
 
     def border_collision(self, screen: _Screen):
         """Checks if the snake has hit or gone beyond screen borders"""
