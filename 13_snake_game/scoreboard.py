@@ -3,6 +3,7 @@ import os
 
 ALIGNMENT = "center"
 FONT = ("Courier", 24, "normal")
+FILE_PATH = "13_snake_game/high_score.txt"
 
 
 class Scoreboard(Turtle):
@@ -14,8 +15,8 @@ class Scoreboard(Turtle):
         self.score = 0
         # Sets high score and loads it if available.
         self.high_score = 0
-        if os.path.exists("13_snake_game/high_score.txt"):
-            with open("13_snake_game/high_score.txt") as file:
+        if os.path.exists(FILE_PATH):
+            with open(FILE_PATH) as file:
                 self.high_score = int(file.read())
         # Prepares score printing
         self.screen_height = round(screen.window_height()/2) - 40
@@ -37,7 +38,7 @@ class Scoreboard(Turtle):
     def set_high_score(self):
         if self.score > self.high_score:
             self.high_score = self.score
-            with open("13_snake_game/high_score.txt", mode="w") as file:
+            with open(FILE_PATH, mode="w") as file:
                 hs_str = str(self.high_score)
                 file.write(hs_str)
         self.print_score()
