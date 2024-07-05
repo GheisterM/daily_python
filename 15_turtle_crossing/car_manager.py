@@ -106,5 +106,13 @@ class CarManager:
 
         return False
 
+    def respawn(self):
+        for old_car in self.cars:
+            old_car.goto(self.screen_width*2, self.screen_height*2)
+
+        self.cars.clear()
+
+        self.cars = self.spawn()
+
     def speed_up(self):
         self.car_speed += CAR_SPEED_UP

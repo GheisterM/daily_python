@@ -23,6 +23,7 @@ while not game_over:
     if player.ycor() >= screen.window_height()/2:
         player.respawn()
         score.next_level()
+        cars.respawn()
         cars.speed_up()
     screen.update()
 
