@@ -2,16 +2,16 @@ from tkinter import Tk, Canvas, PhotoImage, Label, Entry, Button, END
 from tkinter import messagebox
 from random import randint, choice, shuffle
 import pyperclip
+import json
 
 LOGO_PATH = "21_password_manager/logo.png"
-SAVE_PATH = "21_password_manager/data.txt"
+SAVE_PATH = "21_password_manager/data.json"
 SAVE_PROMPT = """These are the fields entered:
 - Email/Username: {}
 - Password: {}
 
 Are you ok with this selection?
 """
-# ------------------------ PASSWORD GENERATOR --------------------------- #
 
 
 def generate_password():
@@ -33,9 +33,6 @@ def generate_password():
     password_entry.insert(0, password)
 
 
-# -------------------------- SAVE PASSWORD ------------------------------ #
-
-
 def save():
     website = website_entry.get().strip()
     email = email_entry.get().strip()
@@ -50,9 +47,25 @@ def save():
             message=SAVE_PROMPT.format(email, password)
         )
         if is_ok:
-            with open(SAVE_PATH, mode="a") as file:
-                new_line = f"{website} | {email} | {password}\n"
-                file.write(new_line)
+            new_data = {
+                website: {
+                    "email": email,
+                    "password": password
+                }
+            }
+
+            try:
+                file = open(SAVE_PATH)
+            except FileNotFoundError:
+                data = {}
+            else:
+                data = json.load(file)
+                file.close()
+            finally:
+                data.update(new_data)
+
+            with open(SAVE_PATH, mode="w") as file:
+                json.dump(data, file, indent=4)
 
             website_entry.delete(0, END)
             password_entry.delete(0, END)
@@ -64,7 +77,38 @@ def save():
             )
 
 
-# ----------------------------- UI SETUP -------------------------------- #
+def search_website():
+    website = website_entry.get().strip()
+    if website != "":
+        try:
+            result = {}
+            with open(SAVE_PATH) as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            messagebox.showerror(
+                title="Oops!",
+                message="You haven't created any password yet"
+            )
+        else:
+            if website in data:
+                result = data[website]
+                email = result["email"]
+                password = result["password"]
+                prompt = f"Email: {email}\nPassword: {password}"
+                messagebox.showinfo(title=website, message=prompt)
+            else:
+                prompt = f"No password for {website} created yet."
+                messagebox.showinfo(
+                    title="No password",
+                    message=prompt
+                )
+    else:
+        messagebox.showinfo(
+            title="Oops!",
+            message="There's nothing to search"
+        )
+
+
 window = Tk()
 window.title("Password Manager")
 window.config(padx=45, pady=45)
@@ -77,9 +121,13 @@ canvas.grid(column=1, row=0)
 website_label = Label(text="Website: ")
 website_label.grid(column=0, row=1)
 website_entry = Entry()
-website_entry.config(width=40)
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry.config(width=21)
+website_entry.grid(column=1, row=1)
 website_entry.focus()
+
+search_button = Button(text="Search", command=search_website)
+search_button.config(width=14)
+search_button.grid(column=2, row=1)
 
 email_label = Label(text="Email/Username: ")
 email_label.grid(column=0, row=2)
