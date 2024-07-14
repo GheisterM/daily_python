@@ -20,7 +20,6 @@ NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 NEWS_KEY = environ.get("NEWS_KEY")
 NEWS_PARAMS = {
     "q": COMPANY_NAME,
-    "searchIn": "title",
     "apiKey": NEWS_KEY,
     "language": "es",
     "pageSize": 3,
