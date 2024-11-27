@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'header.html' %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{ url_for('static', filename='assets/img/about-bg.jpg') }}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1>About Me</h1>
+                            <span class="subheading">This is what I do.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <p>I'm Gheister Morillo, a Python Developer looking to validate it's Python knowledge and looking to learn more about backend developing. I see myself growing to the Data Science and Machine Learning fields in the near future.</p>
+                        <p>I want to keep learning and do things that serve others with the knowledge I get. I also like arts and meet new people.</p>
+                        {% if post is not none: %}
+                        <p><strong>You came here looking for the name {{ post.author }}, but it was only a random generated name.</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+        {% include 'footer.html' %}
+    </body>
+</html>

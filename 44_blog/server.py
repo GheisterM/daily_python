@@ -10,10 +10,25 @@ def home():
     return render_template('index.html', posts=posts.all_posts)
 
 
+@app.route('/about-us')
+def about():
+    return render_template('about.html', post=None)
+
+
+@app.route('/about-us/<int:index>')
+def about_fake(index):
+    current_post = posts.get_blog(index)
+    return render_template('about.html', post=current_post)
+
+
+@app.route('/contact-us')
+def contact():
+    return render_template('contact.html')
+
+
 @app.route('/posts/<int:index>')
 def get_post(index):
     current_post = posts.get_blog(index)
-    print(current_post)
     return render_template('post.html', post=current_post)
 
 

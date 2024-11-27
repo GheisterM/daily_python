@@ -1,6 +1,6 @@
 import requests
 
-BLOGS_URL = 'https://api.npoint.io/c790b4d5cab58020d391'
+BLOGS_URL = 'https://api.npoint.io/949ed868d3a96ecaec5a'
 
 
 class Post:
